@@ -1,10 +1,24 @@
 # Alma Hours Widget
 
 ## Configuration
-Create an Alma Hours API Key - 
+### Create an Alma Hours API Key ###
+You will need to go to the Alma Developer Network and create an Application. The Application Name can be anything (For example: Alma Hours Widget). The Platfrom should be "Web application". Under the API Management tab, add the Configuration API with read-only access. Once you have added the application, an API Key will be created. Enter this API Key in the alma_hours_widget.php file in the configuration section at the top of the file:
+```php
+// alma_hours_widget.php
+// set your Alma Hours API Key - Replace XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX with your Alma API Key
+define("ALMA_HOURS_API_KEY","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+```
+
+### Cross-Site Script Access ###
+If you will be including your hours widget on a site other than the location where the alma_hours_widget.php file will be hosted, then you will need to enable XSS access. Simply add the list of domains where you will be displaying the hours widget in the $allowed_domains array in the alma_hours_widget.php in the configuration section at the top of the file:
+```php
+// alma_hours_widget.php
+// example setting for allowing cross-site scripting (XSS)
+$allowed_domains = array("http://www.allowed-website.edu","https://secure.allowed-website.edu");
+```
 
 ## CSS
-CSS can be used to completely change the styles of the widget design. Every part of the widget has a relevant class that can be targeted with CSS.
+CSS can be used to completely change the styles of the widget design. Every part of the widget has a relevant class that can be targeted with CSS. The default stylesheet alma_hours_widget.css can be used as a starting point for your widget's design.
 ```html
 <link rel="stylesheet" href="alma_hours_widget.css" />
 ```
@@ -28,7 +42,10 @@ Each widget is added by adding a DIV tag with the class "alma_hours_widget".
 ```html
 <div class="alma_hours_widget" data-library="MILLAR" data-title="Library Hours"></div>
 ```
-- The **date-library** and **data-title** attributes are required attributes.
+- The **data-library** and **data-title** attributes are required attributes.
+
+### data-library
+The value for data-library can be found in Alma by navigating to the Fulfillment Configuration - Configuration Menu. In the "You are configuring:" dropdown menu, select the library for which you would like to create an Hours Widget. Then select "Opening Hours" under Library. Select the "Summary" tab to reveal the library's "Code". The value for the Library Code should be used for the data-library attribute to create a widget for that library.
 
 ### Full Usage Example:
 ```html
