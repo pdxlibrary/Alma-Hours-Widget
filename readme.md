@@ -1,7 +1,7 @@
 # Alma Hours Widget
 
 ## Configuration
-
+Create an Alma Hours API Key - 
 
 ## CSS
 CSS can be used to completely change the styles of the widget design. Every part of the widget has a relevant class that can be targeted with CSS.
@@ -30,7 +30,7 @@ Each widget is added by adding a DIV tag with the class "alma_hours_widget".
 ```
 - The **date-library** and **data-title** attributes are required attributes.
 
-### Full Usuage Example:
+### Full Usage Example:
 ```html
 <!-- Alma Hours Widget CSS -->
 <link rel="stylesheet" href="alma_hours_widget.css" />
