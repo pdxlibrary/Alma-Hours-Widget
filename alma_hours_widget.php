@@ -119,8 +119,6 @@ foreach($xml_result->day as $day)
 {
 	if(strtotime($day->date) > 0)
 	{
-		$formatted_date = gmdate($date_format,strtotime($day->date));
-		
 		// work around for missing date info for full day closures
 		$breakout_count = 0;
 		while(strcmp(gmdate("Y-m-d",strtotime($day->date)),$expected_current_date))
@@ -135,10 +133,11 @@ foreach($xml_result->day as $day)
 			$breakout_count++;
 			if($breakout_count > 30)
 			{
-				print("ERROR: breakout!<br>\n");
 				break;
 			}
 		}
+		
+		$formatted_date = gmdate($date_format,strtotime($day->date));
 		
 		if(strtotime($day->date.$day->hours->hour->from) > 0 && strtotime($day->date.$day->hours->hour->to) > 0 )
 		{
@@ -157,8 +156,7 @@ foreach($xml_result->day as $day)
 		else
 		{
 			// Full Day Closure
-			$closure_reason = "";
-			$hours[gmdate("Y-m-d",strtotime($day->date))] = array("date"=>$formatted_date,"closed"=>true,"closure_reason"=>$closure_reason);
+			$hours[gmdate("Y-m-d",strtotime($day->date))] = array("date"=>$formatted_date,"closed"=>true);
 		}
 		$expected_current_date = gmdate("Y-m-d",strtotime("tomorrow",strtotime($expected_current_date)));
 	}
