@@ -12,7 +12,7 @@ You will need to go to the Alma Developer Network and create an Application. The
 define("ALMA_HOURS_API_KEY","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 ```
 
-### Caching (optional)
+### Caching (recommended)
 Without caching, the Alma API would need to be queried every time the widget is displayed. This can put a heavy and unneccessary load on the API server. This his application uses disk based caching to update the hours for each library to a static file once per day by default. The CACHE_FREQUENCY setting can be changed from "Daily" to "Hourly" or "None"
 ```php
 // alma_hours_widget.php
