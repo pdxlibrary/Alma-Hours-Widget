@@ -5,6 +5,9 @@
 // set your Alma Hours API Key
 define("ALMA_HOURS_API_KEY","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
+// set the Caching Frequency - Daily, Hourly or None (default: Daily)
+define("CACHE_FREQUENCY","None");
+
 // if this file is not on the same host as the widget JavaScript file, cross-site scripting (XSS) access needs to be allowed
 $allowed_domains = array();
 
@@ -62,19 +65,45 @@ if(strcmp($to,''))
 if(isset($_GET['debug']))
 	print("URL: $url<br>\n");
 
-//open connection
-$ch = curl_init();
 
-//set the url, number of POST vars, POST data
-curl_setopt($ch,CURLOPT_URL, $url);
-curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+$xml_result = false;
 
-//execute post
-$result = curl_exec($ch);
-$xml_result = simplexml_load_string($result);
+if(strcmp(CACHE_FREQUENCY,"None"))
+{
+	// check cache for hours
+	if(file_exists("cache/$library-$from-$to.xml"))
+	{
+		// check last modified datestamp
+		$cache_expired = false;
+		switch(CACHE_FREQUENCY)
+		{
+			case 'Hourly': if(filemtime("cache/$library-$from-$to.xml") < strtotime("1 hour ago")) $cache_expired = true;
+			default: if(filemtime("cache/$library-$from-$to.xml") < strtotime("1 day ago")) $cache_expired = true;
+		}
+		if(!$cache_expired)
+			$xml_result = simplexml_load_file("cache/$library-$from-$to.xml");
+	}
+}
 
-// REPORT REST QUERY ERRORS
-
+// if no cache data available, query the Alma API
+if(!$xml_result)
+{
+	// use curl to make the API request
+	$ch = curl_init();
+	curl_setopt($ch,CURLOPT_URL, $url);
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+	$result = curl_exec($ch);
+	curl_close($ch);
+	
+	// parse the response xml
+	$xml_result = simplexml_load_string($result);
+	
+	// save result to cache
+	if(is_writable("cache/$library-$from-$to.xml"))
+	{
+		file_put_contents("cache/$library-$from-$to.xml",$result);
+	}
+}
 
 // CREATE JSON OUTPUT
 if(strcmp($from,''))
@@ -162,8 +191,7 @@ if(isset($_GET['debug']))
 	print("</pre>\n");
 }
 
-//close connection
-curl_close($ch);
+
 
 
 ?>
