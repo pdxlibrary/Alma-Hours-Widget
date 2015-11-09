@@ -6,7 +6,7 @@
 define("ALMA_HOURS_API_KEY","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 // set the Caching Frequency - Daily, Hourly or None (default: Daily)
-define("CACHE_FREQUENCY","None");
+define("CACHE_FREQUENCY","Daily");
 
 // if this file is not on the same host as the widget JavaScript file, cross-site scripting (XSS) access needs to be allowed
 $allowed_domains = array();
@@ -77,8 +77,8 @@ if(strcmp(CACHE_FREQUENCY,"None"))
 		$cache_expired = false;
 		switch(CACHE_FREQUENCY)
 		{
-			case 'Hourly': if(filemtime("cache/$library-$from-$to.xml") < strtotime("1 hour ago")) $cache_expired = true;
-			default: if(filemtime("cache/$library-$from-$to.xml") < strtotime("1 day ago")) $cache_expired = true;
+			case 'Hourly': if(filemtime("cache/$library-$from-$to.xml") < strtotime(date("Y-m-d H:00:00",strtotime("now")))) $cache_expired = true;
+			default: if(filemtime("cache/$library-$from-$to.xml") < strtotime(date("Y-m-d 00:00:00",strtotime("now")))) $cache_expired = true;
 		}
 		if(!$cache_expired)
 			$xml_result = simplexml_load_file("cache/$library-$from-$to.xml");
