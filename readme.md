@@ -13,7 +13,7 @@ define("ALMA_HOURS_API_KEY","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 ```
 
 ### Caching (recommended)
-Without caching, the Alma API would need to be queried every time the widget is displayed. This can put a heavy and unneccessary load on the API server. This his application uses disk based caching to update the hours for each library to a static file once per day by default. The CACHE_FREQUENCY setting can be changed from "Daily" to "Hourly" or "None"
+Without caching, the Alma API would need to be queried every time the widget is displayed. This can put a heavy and unneccessary load on the API server. This his application uses disk based caching to update the hours for each unique API request to a static file once per day by default. The CACHE_FREQUENCY setting can be changed from "Daily" to "Hourly" or "None"
 ```php
 // alma_hours_widget.php
 define("CACHE_FREQUENCY","Daily");
