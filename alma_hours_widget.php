@@ -99,7 +99,7 @@ if(!$xml_result)
 	$xml_result = simplexml_load_string($result);
 	
 	// save result to cache
-	if(is_writable("cache/$library-$from-$to.xml"))
+	if(strcmp(CACHE_FREQUENCY,"None") && is_writable("cache/$library-$from-$to.xml"))
 	{
 		file_put_contents("cache/$library-$from-$to.xml",$result);
 	}
