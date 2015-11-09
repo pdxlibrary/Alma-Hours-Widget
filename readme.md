@@ -1,7 +1,10 @@
 # Alma Hours Widget
 
+## Description
+This application uses the Ex Libris Alma Hours API to create a dynamic HTML hours widget to be used on external websites to display a library's upcoming hours. Users simply have include the JavaScript and CSS files and add a placeholder DIV tag where they want their library's hours to display and the application will handle all the commuication with the Alma API, formatting of the results and generation of the HTML output via a dynamic AJAX request.
+
 ## Configuration
-### Create an Alma Hours API Key ###
+### Create an Alma Hours API Key
 You will need to go to the Alma Developer Network and create an Application. The Application Name can be anything (For example: Alma Hours Widget). The Platfrom should be "Web application". Under the API Management tab, add the Configuration API with read-only access. Once you have added the application, an API Key will be created. Enter this API Key in the alma_hours_widget.php file in the configuration section at the top of the file:
 ```php
 // alma_hours_widget.php
@@ -9,7 +12,15 @@ You will need to go to the Alma Developer Network and create an Application. The
 define("ALMA_HOURS_API_KEY","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 ```
 
-### Cross-Site Script Access ###
+### Caching (optional)
+Without caching, the Alma API would need to be queried every time the widget is displayed. This can put a heavy and unneccessary load on the API server. This his application uses disk based caching to update the hours for each library to a static file once per day by default. The CACHE_FREQUENCY setting can be changed from "Daily" to "Hourly" or "None"
+```php
+// alma_hours_widget.php
+define("CACHE_FREQUENCY","Daily");
+```
+*For caching to function correctly, the "cache" folder must have write-access enabled.*
+
+### Cross-Site Script Access (optional)
 If you will be including your hours widget on a site other than the location where the alma_hours_widget.php file will be hosted, then you will need to enable XSS access. Simply add the list of domains where you will be displaying the hours widget in the $allowed_domains array in the alma_hours_widget.php in the configuration section at the top of the file:
 ```php
 // alma_hours_widget.php
@@ -69,6 +80,7 @@ The value for data-library can be found in Alma by navigating to the Fulfillment
 - **data-date-format** – PHP standard date format options (e.g. "m/d/Y", "m/d/y", "m-d-y", etc…)
 - **data-time-format** – PHP standard time format options (e.g. "g:ia", "H:i:s", etc…)
 
+These optional HTML5 attributes may be added to the DIV tag placeholder as seen in the following examples:
 
 ### Custom Time/Date Formats:
 ```html
